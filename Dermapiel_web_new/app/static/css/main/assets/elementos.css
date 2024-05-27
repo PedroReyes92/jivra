@@ -1,0 +1,16 @@
+/*checkbox de pagina de medicamentos*/
+input[type="checkbox"] {
+    accent-color: blue;
+    width: 15px;
+    height: 15px;
+  }
+
+ select{
+    
+    color: rgb(34, 34, 34);
+    padding: 10px 10px;
+    border: none;
+    border-radius: 5px;
+    transition: 0.6s ease all;
+    cursor: pointer;
+  }

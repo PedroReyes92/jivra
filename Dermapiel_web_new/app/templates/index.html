@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Farmacias Dermocutanea</title>
+  <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="static/css/login.css">
+</head>
+<body>
+  <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+    <div class="container">
+      <div class="card login-card">
+        <div class="row no-gutters">
+          <div class="col-md-5">
+            <img src="static/image/login.jpg" alt="login" class="login-card-img">
+          </div>
+          <div class="col-md-7">
+            <div class="card-body">
+              <div class="brand-wrapper">
+                <img src="static/image/logo.png" alt="logo" class="logo">
+              </div>
+              <p class="login-card-description">Inicia Sesion para continuar</p>
+                <form action="/login" method="post">
+
+                <!--Usuario-->
+                  <div class="form-group">
+                    <label class="font-weight-bold">Usuario <span class="text-danger">*</span></label>
+                    <label for="usuario" class="sr-only">Usuario</label>
+                    <select name="usuario" id="usuarios" class="form-control" required>
+                      <option value="SUPERVISOR">SUPERVISOR</option>
+                      {% for row in data %}
+                          class="form-control"<option value="{{ row[1] }}">{{ row[1] }}</option>
+                      {% endfor %}
+                  </select>
+                  </div>
+                  <!--/Usuario-->
+
+                  <!--Contraseña-->
+                  <div class="form-group mb-4">
+                    <label class="font-weight-bold">Contraseña <span class="text-danger">*</span></label>
+                    <label for="password" class="sr-only">Password</label>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="***********" required>
+                  </div>
+                  <!--/Contraseña-->
+
+                  <!--Sucursal-->
+                  <div class="form-group mb-4">
+                    <label class="font-weight-bold">Sucursal <span class="text-danger">*</span></label>
+                  <select name="sucursal" id="sucursal" class="form-control" required>
+                    {% for row in data2 %}
+                        <option value="{{ row[1] }}">{{ row[1] }}</option>
+                    {% endfor %}
+                </select>
+                <!--/Sucursal-->
+
+                  <input name="login" id="login" class="btn btn-block login-btn mb-4" type="submit" value="Entrar">
+                </form>
+                <a href="#!" class="forgot-password-link">Olvidastes tu Contraseña?</a>
+                
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </main>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+{% if data3 %}
+    <script src="{{ url_for('static', filename='js/alert_pass.js') }}"></script>
+{% endif %}
+</body>
+</html>

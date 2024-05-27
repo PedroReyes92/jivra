@@ -1,0 +1,712 @@
+{% extends './layout_main.html' %}
+
+{% block title %}{{datos.titulo}}{% endblock %}
+{% block body %}
+
+  <div class="content-wrapper">
+    <!-- Content -->
+
+
+         <!-- Contentenido -->
+
+         <div class="container-xxl flex-grow-1 container-p-y">
+          <h4 class="py-3 mb-4"><span class="text-muted fw-light">Articulos /</span>Medicamentos</h4>
+
+
+          <hr class="container-m-nx mt-5" />
+
+
+          <!-- Pills -->
+          <div class="row">
+            <div class="col-xl-6">
+           
+              <div class="nav-align-top mb-4">
+                <ul class="nav nav-pills mb-3" role="tablist">
+                  <li class="nav-item">
+                    <button
+                      type="button"
+                      class="nav-link active"
+                      role="tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#navs-pills-top-home"
+                      aria-controls="navs-pills-top-home"
+                      aria-selected="true">Movimientos Recientes
+                    </button>
+                  </li>
+                  <li class="nav-item">
+                    <button style="background-color: #2bcd72;"
+                      type="button"
+                      class="btn btn-primary"
+                      data-bs-toggle="modal"
+                      data-bs-target="#anadirModal"><i class="fa-solid fa-plus"></i>
+                      Añadir</button>
+                  </li>
+                </ul>
+                <div class="tab-content">
+
+                  <!--Tabla Movimientos Recientes-->
+                  <div class="tab-pane fade show active" id="navs-pills-top-home" role="tabpanel">
+                    <div class="table-responsive text-nowrap">
+                      <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            
+                            <th>Fecha</th>
+                            <th>Id</th>
+                            <th>Descripción</th>
+                            <!--
+                            <th>Laboratorio</th>
+                            <th>Linea</th>
+                            <th>Presentación</th>
+                            -->
+                            <th>Existencia</th>
+                            <th>Precio Venta</th>
+                            <th>Acciones</th>
+                          </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0">
+                          {% for row in data %}
+                          
+                          <tr>
+                            <td>{{ row.Fecha_Ultimo_Movto.strftime('%Y-%m-%d') }}</td>
+                            <td>{{ row.Id_Articulo }}</td>
+                            <td>
+                              <span class="fw-medium">{{ row.Descripcion }}</span>
+                            </td>
+                            <!--
+                            <td>{% for l in laboratori %}{% if l[0] == row.Id_Laboratorio %}{{ l[1] }}{% endif %}{% endfor %}</td>
+                            <td>{% for l in linea %}{% if l[2] == row.Id_Linea %}{{ l[0] }}{% endif %}{% endfor %}</td>
+                            <td>{% for l in presentacion %}{% if l[0] == row.Id_Presentacion %}{{ l[1] }}{% endif %}{% endfor %}</td>
+                            -->
+                            <td>{{ row.Existencia }}</td>
+                            <td>$ {{ row.Precio_Venta|round(2) }}</td>                
+                            <td>
+                              <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                  <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+
+                            <!--Barra de acciones de Botones-->
+                                <div class="dropdown-menu">
+                                  <a class="dropdown-item" href="javascript:void(0);" id="btn-edit{{row.Id_Articulo}}" data-bs-toggle="modal" data-bs-target="#edicionModal{{row.Id_Articulo}}"
+                                    ><i class="bx bx-edit-alt me-1"></i> Editar</a>
+                                  
+                                  {% if datos_medicamentos|length == 0 %}
+                                  <a class="dropdown-item" href="javascript:void(0);" id="btn-edit{{row.Id_Articulo}}" data-bs-toggle="modal" data-bs-target="#datosmediModal{{row.Id_Articulo}}"
+                                  ><i class='bx bx-info-circle'></i> Agregar Inf. medicamento</a>
+                                  {% else %}
+                                  {% set ns = namespace(variable_global=false) %}
+                                    {% for dtos in datos_medicamentos %}
+                                      {% if dtos['Id_Articulo'] == row['Id_Articulo'] %}
+                                      {% set ns.variable_global = true %}
+                                        <a class="dropdown-item" href="javascript:void(0);" id="btn-edit{{row['Id_Articulo']}}" data-bs-toggle="modal" data-bs-target="#datosmedi_editModal{{row.Id_Articulo}}"
+                                        ><i class='bx bx-info-circle'></i> Inf medicamento</a>
+                                      {% endif %}
+                                    {% endfor %}
+                                    {% if ns.variable_global == false %}
+                                      <a class="dropdown-item" href="javascript:void(0);" id="btn-edit{{row.Id_Articulo}}" data-bs-toggle="modal" data-bs-target="#datosmediModal{{row.Id_Articulo}}"
+                                      ><i class='bx bx-info-circle'></i> Agregar Inf. Medicamento</a>
+                                    {% endif %}
+                                  {% endif %}
+                                  <a class="dropdown-item" href="javascript:void(0);" id="btn-edit{{row['Id_Articulo']}}" data-bs-toggle="modal" data-bs-target="#deledbasicModal{{row.Id_Articulo}}"
+                                    ><i class="bx bx-trash me-1"></i> Eliminar</a>
+                                  
+                                </div>
+                            <!--/Barra de acciones de Botones-->
+                              </div>
+                            </td>
+                          </tr> 
+            
+                         
+
+
+              <!-- Modal Edicion de Medicamento-->
+              <form action="/editar_medicamento/{{row.Id_Articulo}}" method="post">
+                
+                
+                <div class="modal fade" id="edicionModal{{row.Id_Articulo}}" tabindex="-1" aria-hidden="true">
+                  <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel3">Edicion de Medicamentos {{row.Id_Articulo}}</h5>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="row">
+            
+                          <div class="col mb-3">
+                            <label for="med">Id. Medicamento</label><br>
+                            <input type="text" name="Id_medicamento" id="Id.medicamento" value="{{row.Id_Articulo}}" required><br>
+                            
+                            
+                            <label for="codb">Codigo de Barra</label><br>
+                            <input type="text" name="Codigo_Barra" id="Codigo de Barra"  value="{{row.CODIGO_BARRA}}" required><br>
+                    
+                            <label for="descab">Desc. Abreviada</label><br>
+                            <input type="text" name="Desc_Abreviada" id="Desc. Abreviada" value="{{row.Des_Abreviado}}"  required><br>
+                            
+                            <label for="desc">Descripcion</label><br>
+                            <input type="text" name="Descripcion" id="Descripcion" value="{{row.Descripcion}}" required><br>
+            
+                            <label for="clav_product">Clave de producto y servicios</label><br>
+                            <input type="text" name="Clave_producto_servicios" id="Clave de producto y servicios" value="{{row.CLAVEPRODSERV}}"><br>
+                            
+                            <label for="age">Laboratorio:</label><br>
+                            <select name="Laboratorio" required>
+                              <option value="" selected disabled hidden>Laboratorio</option>
+                                {% for l in laboratori %}
+                                {% if l[0] == row.Id_Laboratorio %}
+                                 <option value="{{ l[0] }}" selected>{{ l[1] }}</option>
+                                {% else %}
+                                  <option value="{{ l[0] }}">{{ l[1] }}</option>
+                                {% endif %}
+                                {% endfor %}                  
+                            </select><br>
+                            
+                            <label for="lin">Linea:</label><br>
+                            <select name="Linea"  required>
+                              <option value="" selected disabled hidden>Linea</option>
+                                {% for l in linea %}
+                                {% if l.Id_Linea == row.Id_Linea %}
+                                  <option value="{{ l.Id_Linea }}" selected>{{ l.Descripcion }}</option>
+                                {% else %}
+                                  <option value="{{ l.Id_Linea }}">{{ l.Descripcion }}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select><br>
+            
+                            <label for="pres">Presentación:</label><br>
+                            <select name="Presentacion" required>
+                              <option value="" selected disabled hidden>Presentación</option>
+                                {% for l in presentacion %}
+                                {% if l[0] == row.Id_Presentacion %}
+                                  <option value="{{ l[0] }}" selected>{{ l[1] }}</option>
+                                {% else %}
+                                  <option value="{{ l[0] }}">{{ l[1] }}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select><br>
+                          </div>
+                        </div>
+                        <div class="row g-2">
+                          <div class="col mb-0">
+                            <label for="min">Minimo:</label><br>
+                            <input type="text" name="Minimo" id="Minimo"  value="{{row.Exis_Minimo}}" required><br> 
+                    
+                            <label for="costp">Costo Promedio:</label><br>
+                            <input type="text" name="Costo_Promedio" id="Costo Promedio"  value="{{row.Costo_Promedio|round(2)}}" required><br>
+                    
+                            <label for="desc">Descuento:</label><br>
+                            <input type="text" name="Descuento" id="Descuento"  value="{{row.Descuento}}" required><br>
+                            
+                          </div>
+            
+                          <div class="col mb-0">
+                            <label for="max">Máximo:</label><br>
+                            <input type="text" name="Maximo" id="Máximo"  value="{{row.Exis_Maximo}}" required><br>
+            
+                            <label for="prs"> Precio de Compra:</label><br>
+                            <input type="text" name="Ultimo_Precio_Compra" id="Ultimo Precio de Compra"  value="{{row.Ultimo_Precio_Compra|round(2)}}" required><br>
+            
+                            <label for="pvn">Precio de Venta:</label><br>
+                            <input type="text" name="Precio_Venta" id="Precio de Venta"  value="{{row.Precio_Venta|round(2)}}" required><br>
+            
+                            <label for="iva">% IVA:</label><br>
+                            <input type="text" name="Iva" id="Iva"  value="{{row.IVA|round(2)}}" required><br>
+            
+                            
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                          Cerrar
+                        </button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </form>
+              <!--/ Modal Edicion de Medicamento-->
+
+              <!-- Modal Información del medicamento agregar-->
+              <form action="/grabar_datosmedi/{{row.Id_Articulo}}" method="post">
+                <div class="modal fade" id="datosmediModal{{row.Id_Articulo}}" tabindex="-1" aria-hidden="true">
+                  <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel4">Agregar Datos Para Articulo:  {{row['Descripcion']}}</h5><br>
+                        
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"></button>
+                      </div>
+                      <!--Info-->
+                      <div class="card mb-4">
+                        <h5 class="card-header">Detalles</h5>
+                        <!-- Account -->
+                        <div class="card-body">
+                          <div class="d-flex align-items-start align-items-sm-center gap-4">
+                            <img
+                              src=""
+                              alt="user-avatar"
+                              class="d-block rounded"
+                              height="100"
+                              width="100"
+                              id="uploadedAvatar" />
+                            <div class="button-wrapper">
+                              <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                                <span class="d-none d-sm-block">Cargar Foto</span>
+                                <i class="bx bx-upload d-block d-sm-none"></i>
+                                <input
+                                  type="file"
+                                  id="upload"
+                                  class="account-file-input"
+                                  hidden
+                                  accept="image/png, image/jpeg" />
+                              </label>
+                              <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
+                                <i class="bx bx-reset d-block d-sm-none"></i>
+                                <span class="d-none d-sm-block">Borrar</span>
+                              </button>
+
+                              <p class="text-muted mb-0">Tamaño maximo permitido hasta 800k en Formatos jpg y png</p>
+                            </div>
+                          </div>
+                        </div>
+                        <hr class="my-0" />
+                        <div class="card-body">
+                            <div class="row">
+                              <div class="mb-3 col-md-6">
+                                <label for="firstName" class="form-label">ID del medicamento</label>
+                                <label
+                                  class="form-control"
+                                  type="text"
+                                  id="firstName"
+                                  name="Id_Articulo"
+                                   >{{row.Id_Articulo}}</label>
+                              </div>
+                              <div class="mb-3 col-md-6">
+                                <label for="lastName" class="form-label">Descripción</label>
+                                <label class="form-control" type="text" name="Descripcion" id="lastName">{{row.Descripcion}}</label>
+                              </div>
+                              <div class="mb-3 col-md-6">
+                                <label for="email" class="form-label">Formula</label>
+                                <input
+                                  class="form-control"
+                                  type="text"
+                                  id="email"
+                                  name="Formula"
+                                  placeholder="Formula Activa" />
+                              </div>
+                              <div class="mb-3 col-md-6">
+                                <label for="organization" class="form-label">Presentación</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="organization"
+                                  name="Presentacion"
+                                  placeholder="Presentacion">
+                              </div>
+                              <div class="mb-3 col-md-6">
+                                <label class="form-label" for="phoneNumber">Indicación</label>
+                                <div class="input-group input-group-merge">
+                                  <input
+                                    type="text"
+                                    id="phoneNumber"
+                                    name="Indicacion"
+                                    class="form-control"
+                                    placeholder="Indicaciones" />
+                                </div>
+                              </div>
+                              <div class="mb-3 col-md-6">
+                                <label for="address" class="form-label">Contraindicaciones</label>
+                                <input type="text" class="form-control" id="address" name="Contraindicaciones" placeholder="Contraindicaciones" />
+                              </div>
+                              <div class="mb-3 col-md-6">
+                                <label for="state" class="form-label">Dosis y Via de Administración</label>
+                                <input class="form-control" type="text" id="state" name="Dosis" placeholder="Dosis Recomendada" />
+                              </div>
+                              
+                            </div>
+                            
+                        </div>
+                        <!-- /Account -->
+                      </div>
+                      <!--/Info-->
+
+
+
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                          Cerrar
+                        </button>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <!--/Modal Información del medicamento agregar -->
+
+              <!-- Modal Información del medicamento editar-->
+              <form action="/editar_datosmedi/{{row.Id_Articulo}}" method="post">
+                {% if datos_medicamentos != 1 %}               
+                {% for dtos in datos_medicamentos %}
+                {% if dtos['Id_Articulo'] == row['Id_Articulo'] %}
+                <div class="modal fade" id="datosmedi_editModal{{row['Id_Articulo']}}" tabindex="-1" aria-hidden="true">
+                  <div class="modal-dialog modal-xl" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel4"> Edicion del Articulo {{dtos['Id_Articulo']}}</h5>
+                        <button
+                          type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"></button>
+                      </div>
+                      <!--Info-->
+                      <div class="card mb-4">
+                        <h5 class="card-header">Detalles</h5>
+                        <!-- Account -->
+                        <div class="card-body">
+                          <div class="d-flex align-items-start align-items-sm-center gap-4">
+                            <img
+                              src=""
+                              alt="user-avatar"
+                              class="d-block rounded"
+                              height="100"
+                              width="100"
+                              id="uploadedAvatar" />
+                            <div class="button-wrapper">
+                              <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                                <span class="d-none d-sm-block">Cargar Foto</span>
+                                <i class="bx bx-upload d-block d-sm-none"></i>
+                                <input
+                                  type="file"
+                                  id="upload"
+                                  class="account-file-input"
+                                  hidden
+                                  accept="image/png, image/jpeg" />
+                              </label>
+                              <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
+                                <i class="bx bx-reset d-block d-sm-none"></i>
+                                <span class="d-none d-sm-block">Borrar</span>
+                              </button>
+
+                              <p class="text-muted mb-0">Tamaño maximo permitido hasta 800k en Formatos jpg y png</p>
+                            </div>
+                          </div>
+                        </div>
+                        <hr class="my-0" />
+                        <div class="card-body">
+                            <div class="row">
+                              <div class="mb-3 col-md-6">
+                                <label for="firstName" class="form-label">ID del medicamento</label>
+                                <input
+                                  class="form-control"
+                                  type="text"
+                                  id="firstName"
+                                  name="firstName"
+                                  value="{{row.Id_Articulo}}"
+                                  autofocus />
+                              </div>
+                              <div class="mb-3 col-md-6">
+                                <label for="lastName" class="form-label">Descripción</label>
+                                <input class="form-control" type="text" name="lastName" id="lastName" value="{{row.Descripcion}}" />
+                              </div>
+                              <div class="mb-3 col-md-6">
+                                <label for="email" class="form-label">Formula</label>
+                                <input
+                                  class="form-control"
+                                  type="text"
+                                  id="email"
+                                  name="Formula"
+                                  value="{{dtos.FORMULA}}"/>
+                              </div>
+                              <div class="mb-3 col-md-6">
+                                <label for="organization" class="form-label">Presentación</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="organization"
+                                  name="Presentacion"
+                                  value="{{dtos.PRESENTACION}}" />
+                              </div>
+                              <div class="mb-3 col-md-6">
+                                <label class="form-label" for="phoneNumber">Indicación</label>
+                                <div class="input-group input-group-merge">
+                                  <input
+                                    type="text"
+                                    id="phoneNumber"
+                                    name="Indicacion"
+                                    class="form-control"
+                                    value="{{dtos.INDICACIONES_PROPIEDADES}}"/>
+                                </div>
+                              </div>
+                              <div class="mb-3 col-md-6">
+                                <label for="address" class="form-label">Contraindicaciones</label>
+                                <input type="text" class="form-control" id="address" name="Contraindicaciones" value="{{dtos.CONTRAINDICACIONES}}"/>
+                              </div>
+                              <div class="mb-3 col-md-6">
+                                <label for="state" class="form-label">Dosis</label>
+                                <input class="form-control" type="text" id="state" name="Dosis" value="{{dtos.DOSIS_ADMINISTRACION}}" />
+                              </div>
+                            </div>
+                            
+                        </div>
+                        <!-- /Account -->
+                      </div>
+                      <!--/Info-->
+
+
+
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                          Cerrar
+                        </button>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+              </form>
+              <!--/Modal Información del medicamento editar-->
+
+              <!-- Modal Borrar -->
+              <div class="modal fade" id="deledbasicModal{{row.Id_Articulo}}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel1">Borrar Medicamento</h5>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col mb-3">
+                          <p>¿Estás Seguro De Que Quieres Eliminar Estos Registros?</p>
+                        </div>
+                      </div>
+                      <div class="row g-2">
+                        <p class="text-warning"><small style="color: #c91249;">Esta acción no se puede deshacer.</small></p>
+                        <div class="col mb-0">
+                        
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Cerrar
+                      </button>
+                      <a class="btn btn-primary"  href="{{ url_for('eliminarmedi', id_medicamento=row.Id_Articulo) }}">Eliminar</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- /Modal Borrar -->
+
+                          
+
+
+                          {% endfor %}
+            
+                        </tbody>
+                      </table>
+
+                      <div clas="row justify-content-md-center">
+                        <div class="col-md-auto">
+                          <span>
+                            {{ paginacion.info }}
+                          </span>
+                          {{ paginacion.links }}
+                        </div>
+                      </div>
+
+
+
+                    </div>
+   
+                  </div>
+                  <!--/Tabla movimientos Recientes-->
+
+                </div>
+              </div>
+            </div>
+
+            
+          </div>
+
+
+          <!-- Pills -->
+        </div>
+        <!-- / Contentido -->
+
+    </div>
+    
+    
+    <!-- Modal  Entrada de Medicamento -->
+    <form action="/grabar_medicamento" method="post">
+    <div class="modal fade" id="anadirModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel3">Entradas de Medicamentos</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+
+              <div class="col mb-3">
+                <label for="med">Id. Medicamento</label>
+                <input type="text" name="Id_medicamento" id="Id.medicamento" placeholder="Id.Medicamento" required>
+                
+                
+                <label for="codb">Codigo de Barra</label>
+                <input type="text" name="Codigo_Barra" id="Codigo de Barra"  placeholder="Codigo de barra" required> 
+        
+                <label for="descab">Desc. Abreviada</label>
+                <input type="text" name="Desc_Abreviada" id="Desc. Abreviada" placeholder="Desc. Abreviada"  required>
+                
+                <label for="desc">Descripcion</label>
+                <input type="text" name="Descripcion" id="Descripcion" placeholder="Descripcion" required>
+
+                <label for="clav_product">Clave de producto y servicios</label>
+                <input type="text" name="Clave_producto_servicios" id="Clave de producto y servicios" placeholder="Clave de producto y servicios" required>
+                
+                <label for="age">Laboratorio:</label>
+                <select name="Laboratorio" id="laboratorioGrabar" required>
+                  <option value="">Laboratorio</option>
+                    {% for l in laboratori %}
+                    <option value="{{ l[0] }}">{{ l[1] }}</option>
+                    {% endfor %}                  
+                </select>
+                
+                <label for="lin">Linea:</label>
+                <select name="Linea" id="lineaGrabar" required>
+                  <option value="">Linea</option>
+                    
+                </select>
+
+                <script>
+                  var lineas = {{linea|tojson}}; // Asegúrate de que esto se procese correctamente en el servidor
+                  document.getElementById('laboratorioGrabar').addEventListener('change', function() {
+                    var laboratorioSeleccionado = this.value;
+                    var selectLinea = document.getElementById('lineaGrabar');
+                    selectLinea.innerHTML = ''; // Limpiar las opciones existentes
+                    
+                    lineas.forEach(function(linea) { // Cambiado 'lineas' a 'linea' para evitar sombras de variables
+                      if (laboratorioSeleccionado == linea.Id_Laboratorio) {
+                        var option = document.createElement('option');
+                        option.value = linea.Id_Linea; // Asumiendo que 'linea.Id_Linea' contiene el valor
+                        option.text = linea.Descripcion; // Asumiendo que 'linea.Descripcion' contiene el texto
+                        selectLinea.appendChild(option);
+                      } // Eliminado el punto y coma extra
+                    });
+                  });
+                </script>
+                
+
+
+
+
+                <label for="pres">Presentación:</label>
+                <select name="Presentacion" required>
+                  <option value="">Presentación</option>
+                    {% for l in presentacion %}
+                    <option value="{{ l[0] }}">{{ l[1] }}</option>
+                    {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="row g-2">
+              <div class="col mb-0">
+                <label for="min">Minimo:</label>
+                <input type="text" name="Minimo" id="Minimo"  placeholder="Minimo" required> 
+        
+                <label for="costp">Costo Promedio:</label>
+                <input type="text" name="Costo_Promedio" id="Costo Promedio"  placeholder="Costo Promedio" required>
+        
+                <label for="desc">Descuento:</label>
+                <input type="text" name="Descuento" id="Descuento"  placeholder="Descuento" required>
+                
+              </div>
+
+              <div class="col mb-0">
+                <label for="max">Máximo:</label>
+                <input type="text" name="Maximo" id="Máximo"  placeholder="Máximo" required> 
+
+                <label for="prs"> Precio de Compra:</label>
+                <input type="text" name="Ultimo_Precio_Compra" id="Ultimo Precio de Compra"  placeholder="Ultimo Precio de Compra" required>
+
+                <label for="pvn">Precio de Venta:</label>
+                <input type="text" name="Precio_Venta" id="Precio de Venta"  placeholder="Precio de Venta" required>
+
+                <label for="iva">% IVA:</label>
+                <input type="text" name="Iva" id="Minimo"  placeholder="%IVA" required>
+
+                
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+              Cerrar
+            </button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </form>
+    <!--/ Modal  Entrada de Medicamento -->
+
+
+    <!-- Footer -->
+    <footer class="content-footer footer bg-footer-theme">
+      <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+        <div class="mb-2 mb-md-0">
+          ©
+          <script>
+            document.write(new Date().getFullYear());
+          </script>
+      
+          <a href="https://www.dermocutanea.com/" target="_blank" class="footer-link fw-medium">Farmacias Dermocutanea</a>
+        </div>
+        
+      </div>
+    </footer>
+    <!-- / Footer -->
+
+    <div class="content-backdrop fade"></div>
+  </div>
+
+  {% if data3 %}
+    <script>
+      alert('{{data3}}');
+    </script>
+  {% endif %}
+    
+{% endblock %}
+
+

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+        <title>{% block title %}{% endblock %}</title>
+        <!-- icon pestaña -->
+        <link rel="icon" type="image/x-icon" href="../static/image/main/assets/icono_pestana/favicon.ico" />
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <!-- Core CSS -->
+        <link rel="stylesheet" href="../static/css/main/assets/core.css" class="template-customizer-core-css" />
+        <link rel="stylesheet" href="../static/css/main/assets/theme-default.css" class="template-customizer-theme-css" />
+        <link rel="stylesheet" href="../static/css/main/assets/demo.css" />
+
+        <!-- Vendors CSS -->
+        <link rel="stylesheet" href="../static/css/main/assets/perfect-scrollbar.css" />
+        <link rel="stylesheet" href="../static/css/main/assets/apex-charts.css" />
+
+        <!-- Page CSS -->
+
+        <!-- Helpers -->
+        <script src="../static/js/main/assets/helpers.js"></script>
+        <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+        <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+        <script src="../static/js/main/assets/config.js"></script>
+        
+    </head>
+    <body>
+
+       <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        <!-- Menu -->
+
+        <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+          <div class="app-brand demo">
+            <a href="/main" class="app-brand-link">
+             <img src="../static/image/main/assets/logo2.png" alt="Logo" width="200">
+           
+            </a>
+
+            <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+              <i class="bx bx-chevron-left bx-sm align-middle"></i>
+            </a>
+          </div>
+
+          <div class="menu-inner-shadow"></div>
+
+          <ul class="menu-inner py-1">
+            <!-- Principal -->
+            <li class="menu-item active open">
+              <a href="javascript:void(0)" class="menu-link menu-toggle">
+                <i class='bx bx-home-circle'></i>
+                <div data-i18n="Dashboards">Principal</div>
+          
+              </a>
+              <ul class="menu-sub">
+                
+                <li class="menu-item">
+                  <a
+                    href="javascript:void(0)"
+                    class="menu-link">
+                    <i class='bx bxs-shopping-bags'></i>
+                    <div data-i18n="eCommerce">Operaciones</div>
+                    
+                  </a>
+                </li>
+                
+                <li class="menu-item">
+                  <a
+                    href="javascript:void(0)"
+                    class="menu-link">
+                    <i class='bx bx-search-alt-2'></i>
+                    <div data-i18n="Academy">Consultas</div>
+                    
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!--/ Principal -->
+
+             <!-- Articulos -->
+             <li class="menu-item">
+              <a href="javascript:void(0)" class="menu-link menu-toggle">
+                <i class='bx bx-cart'></i>
+                <div data-i18n="Layouts">Articulos</div>
+              </a>
+
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a
+                    href="/medicamentos"
+                    
+                    class="menu-link">
+                    <i class='bx bxs-capsule'></i>
+                    <div data-i18n="Chat">Medicamentos</div>
+                  
+                  </a>
+                </li>
+    
+              </ul>
+            </li>
+            <!--/ Articulos -->
+
+             <!-- Reportes -->
+             <li class="menu-item">
+              <a href="javascript:void(0)" class="menu-link menu-toggle">
+                <i class='bx bx-paste' ></i>
+                <div data-i18n="Layouts">Reportes</div>
+              </a>
+
+              <ul class="menu-sub">
+
+                <li class="menu-item">
+                  <a href="javascript:void(0)" class="menu-link">
+                    <div data-i18n="Blank">Blank</div>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <!--/ Reportes -->
+
+             <!-- Catalogos -->
+             <li class="menu-item">
+                <a href="javascript:void(0)" class="menu-link menu-toggle">
+                <i class='bx bx-book-open'></i>
+                <div data-i18n="Layouts">Cátalogos</div>
+                </a>
+
+                <ul class="menu-sub">
+
+                <li class="menu-item">
+                  <a href="javascript:void(0)" class="menu-link">
+                    <div data-i18n="Blank">Blank</div>
+                  </a>
+                </li>
+                </ul>
+            </li>
+           <!-- Catalogos -->
+
+          <!-- Configuraciónes -->
+              <li class="menu-item">
+                <a href="javascript:void(0)" class="menu-link menu-toggle">
+                  <i class='bx bx-cog' ></i>
+                  <div data-i18n="Layouts">Configuraciónes</div>
+                </a>
+
+                <ul class="menu-sub">
+
+                <li class="menu-item">
+                  <a href="javascript:void(0)" class="menu-link">
+                    <div data-i18n="Blank">Blank</div>
+                  </a>
+                </li>
+                </ul>
+              </li>
+           <!-- Configuraciónes -->
+
+            <!-- Misc -->
+            <li class="menu-header small text-uppercase"><span class="menu-header-text">Usuario & Perfil</span></li>
+            <li class="menu-item">
+              <a
+                href="https://wa.me/message/DMVOQIHKHPPSO1"
+                target="_blank"
+                class="menu-link">
+                <i class="menu-icon tf-icons bx bx-support"></i>
+                <div data-i18n="Support">Soporte</div>
+              </a>
+            </li>
+            
+          </ul>
+        </aside>
+        <div class="layout-page">
+          <!-- Navbar -->
+            <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+              <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                  <i class="bx bx-menu bx-sm"></i>
+                </a>
+              </div>
+
+              <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+                <!-- Search -->
+                <div class="navbar-nav align-items-center">
+                  <div class="nav-item d-flex align-items-center">
+                    <i class="bx bx-search fs-4 lh-0"></i>
+                    <input
+                      type="text"
+                      class="form-control border-0 shadow-none ps-1 ps-sm-2"
+                      placeholder="Search..."
+                      aria-label="Search..." />
+                  </div>
+                </div>
+                <!-- /Search -->
+
+                <ul class="navbar-nav flex-row align-items-center ms-auto">
+                  <!-- Place this tag where you want the button to render. -->
+                  
+
+                  <!-- User -->
+                  <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                    <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                      <div class="avatar avatar-online">
+                        <img src="" alt class="w-px-40 h-auto rounded-circle" />
+                      </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li>
+                        <a class="dropdown-item" href="#">
+                          <div class="d-flex">
+                            <div class="flex-shrink-0 me-3">
+                              <div class="avatar avatar-online">
+                                <img src="" alt class="w-px-40 h-auto rounded-circle" />
+                              </div>
+                            </div>
+                            <div class="flex-grow-1">
+                              <span class="fw-medium d-block"></span><!--Nombre usuario-->
+                              <small class="text-muted"></small><!--Cargo/puesto-->
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+                      <li>
+                        <div class="dropdown-divider"></div>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#">
+                          <i class="bx bx-user me-2"></i>
+                          <span class="align-middle">Mi Perfil</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="#">
+                          <i class="bx bx-cog me-2"></i>
+                          <span class="align-middle">Configuración</span>
+                        </a>
+                      </li>
+                      <li>
+                        
+                      </li>
+                      <li>
+                        <div class="dropdown-divider"></div>
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="/salir">
+                          <i class="bx bx-power-off me-2"></i>
+                          <span class="align-middle">Salir</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  <!--/ User -->
+                </ul>
+              </div>
+            </nav>
+
+          <!-- / Navbar -->
+        
+        {% block body %}
+
+        {% endblock %}
+        
+            
+        
+        </div>
+
+
+
+        
+      </div>
+
+      <!-- Overlay -->
+      <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+    <!-- / Layout wrapper -->
+    
+  
+
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+
+    <script src="../static/js/main/assets/jquery.js"></script>
+    <script src="../static/js/main/assets/popper.js"></script>
+    <script src="../static/js/main/assets/bootstrap.js"></script>
+    <script src="../static/js/main/assets/perfect-scrollbar.js"></script>
+    <script src="../static/js/main/assets/menu.js"></script>
+
+    <!-- endbuild -->
+
+    <!-- Vendors JS -->
+    <script src="../static/js/main/assets/apexcharts.js"></script>
+
+    <!-- Main JS -->
+    <script src="../static/js/main/assets/main.js"></script>
+
+    <!-- Page JS -->
+    <script src="../static/js/main/assets/dashboards-analytics.js"></script>
+
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+      
+
+
+
+
+    
+
+    </body>
+
+
+</html>
+
+
